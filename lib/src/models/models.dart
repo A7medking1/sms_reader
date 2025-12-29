@@ -6,16 +6,21 @@ class SmsMessage extends Equatable {
   final String body;
   final int date;
   final int type; // 1=inbox, 2=sent, 3=draft
+  final String? contactName; // Contact name from device contacts
 
   const SmsMessage({
     required this.sender,
     required this.body,
     required this.date,
     required this.type,
+    this.contactName,
   });
 
   bool get isSent => type == 2;
   bool get isReceived => type == 1;
+
+  /// Get display name (contact name if available, otherwise phone number)
+  String get displayName => contactName ?? sender;
 
   factory SmsMessage.fromMap(Map<String, dynamic> map) {
     return SmsMessage(
@@ -30,17 +35,24 @@ class SmsMessage extends Equatable {
     return {'sender': sender, 'body': body, 'date': date, 'type': type};
   }
 
-  SmsMessage copyWith({String? sender, String? body, int? date, int? type}) {
+  SmsMessage copyWith({
+    String? sender,
+    String? body,
+    int? date,
+    int? type,
+    String? contactName,
+  }) {
     return SmsMessage(
       sender: sender ?? this.sender,
       body: body ?? this.body,
       date: date ?? this.date,
       type: type ?? this.type,
+      contactName: contactName ?? this.contactName,
     );
   }
 
   @override
-  List<Object?> get props => [sender, body, date, type];
+  List<Object?> get props => [sender, body, date, type, contactName];
 
   @override
   String toString() => 'SmsMessage(sender: $sender, type: $type, date: $date)';
@@ -52,13 +64,18 @@ class SmsConversation extends Equatable {
   final String lastMessage;
   final int lastDate;
   final int messageCount;
+  final String? contactName; // Contact name from device contacts
 
   const SmsConversation({
     required this.phoneNumber,
     required this.lastMessage,
     required this.lastDate,
     required this.messageCount,
+    this.contactName,
   });
+
+  /// Get display name (contact name if available, otherwise phone number)
+  String get displayName => contactName ?? phoneNumber;
 
   factory SmsConversation.fromMap(Map<String, dynamic> map) {
     return SmsConversation(
@@ -83,17 +100,25 @@ class SmsConversation extends Equatable {
     String? lastMessage,
     int? lastDate,
     int? messageCount,
+    String? contactName,
   }) {
     return SmsConversation(
       phoneNumber: phoneNumber ?? this.phoneNumber,
       lastMessage: lastMessage ?? this.lastMessage,
       lastDate: lastDate ?? this.lastDate,
       messageCount: messageCount ?? this.messageCount,
+      contactName: contactName ?? this.contactName,
     );
   }
 
   @override
-  List<Object?> get props => [phoneNumber, lastMessage, lastDate, messageCount];
+  List<Object?> get props => [
+    phoneNumber,
+    lastMessage,
+    lastDate,
+    messageCount,
+    contactName,
+  ];
 
   @override
   String toString() =>

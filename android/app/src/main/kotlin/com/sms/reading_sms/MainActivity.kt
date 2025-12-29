@@ -3,8 +3,6 @@ package com.sms.reading_sms
 import android.Manifest
 import android.content.pm.PackageManager
 import android.database.Cursor
-import android.net.Uri
-import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
